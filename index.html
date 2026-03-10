@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EPC Ventures — Empowering Energy Infrastructure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E8170A;
+    --red-dark: #B01008;
+    --red-glow: rgba(232,23,10,0.18);
+    --black: #0A0A0A;
+    --dark: #111111;
+    --dark2: #181818;
+    --dark3: #222222;
+    --steel: #2A2A2A;
+    --mid: #444444;
+    --muted: #888888;
+    --light: #CCCCCC;
+    --white: #F5F5F5;
+    --gold: #C8A84B;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--red); }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none; z-index:9999; opacity:0.5;
+  }
+
+  /* ── UTILITY ── */
+  .container { max-width:1200px; margin:0 auto; padding:0 40px; }
+  .tag {
+    font-family:'DM Mono', monospace;
+    font-size:11px; letter-spacing:0.15em; text-transform:uppercase;
+    color: var(--red); border:1px solid var(--red-dark);
+    padding:4px 12px; display:inline-block; margin-bottom:20px;
+  }
+  .section-title {
+    font-family:'Barlow Condensed', sans-serif;
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight:800; line-height:0.95; text-transform:uppercase;
+    letter-spacing:-0.02em;
+  }
+  .red { color: var(--red); }
+  .btn-primary {
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--red); color:#fff;
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:14px; letter-spacing:0.1em; text-transform:uppercase;
+    padding:14px 32px; text-decoration:none;
+    border:none; cursor:pointer;
+    transition: background 0.2s, transform 0.2s;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+  .btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); }
+  .btn-outline {
+    display:inline-flex; align-items:center; gap:10px;
+    background:transparent; color:var(--white);
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:14px; letter-spacing:0.1em; text-transform:uppercase;
+    padding:13px 31px; text-decoration:none;
+    border:1px solid rgba(255,255,255,0.25); cursor:pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--red); color: var(--red); }
+
+  /* ── NAV ── */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    padding:0 40px;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.98), rgba(10,10,10,0));
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid rgba(255,255,255,0.04);
+  }
+  .nav-inner {
+    max-width:1200px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    height:72px;
+  }
+  .nav-logo {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:900; font-size:26px; letter-spacing:0.05em;
+    color:var(--white); text-decoration:none;
+    display:flex; align-items:center; gap:4px;
+  }
+  .nav-logo span { color:var(--red); }
+  .nav-logo sub {
+    font-size:9px; letter-spacing:0.2em; color:var(--muted);
+    vertical-align:middle; margin-left:2px; margin-top:8px;
+    font-family:'DM Mono', monospace;
+  }
+  .nav-links {
+    display:flex; gap:36px; list-style:none;
+  }
+  .nav-links a {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600; font-size:13px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--light); text-decoration:none;
+    transition:color 0.2s;
+    position:relative;
+  }
+  .nav-links a::after {
+    content:''; position:absolute; bottom:-4px; left:0; right:0; height:1px;
+    background:var(--red); transform:scaleX(0); transition:transform 0.2s; transform-origin:left;
+  }
+  .nav-links a:hover { color:var(--white); }
+  .nav-links a:hover::after { transform:scaleX(1); }
+  .nav-cta {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--white); background:var(--red);
+    padding:10px 24px; text-decoration:none;
+    transition:background 0.2s;
+  }
+  .nav-cta:hover { background:var(--red-dark); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height:100vh;
+    background: var(--black);
+    position:relative; overflow:hidden;
+    display:flex; align-items:center;
+  }
+  .hero-grid-bg {
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(232,23,10,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,23,10,0.04) 1px, transparent 1px);
+    background-size:60px 60px;
+    mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+  .hero-left-accent {
+    position:absolute; left:0; top:0; bottom:0; width:4px;
+    background: linear-gradient(to bottom, transparent, var(--red), transparent);
+  }
+  .hero-content {
+    position:relative; z-index:2;
+    padding-top:120px; padding-bottom:80px;
+  }
+  .hero-eyebrow {
+    font-family:'DM Mono', monospace;
+    font-size:11px; letter-spacing:0.25em; text-transform:uppercase;
+    color:var(--red); margin-bottom:28px;
+    display:flex; align-items:center; gap:16px;
+  }
+  .hero-eyebrow::before {
+    content:''; display:block; width:40px; height:1px; background:var(--red);
+  }
+  .hero-headline {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:900; font-size: clamp(64px, 10vw, 120px);
+    line-height:0.88; text-transform:uppercase; letter-spacing:-0.03em;
+    margin-bottom:32px;
+  }
+  .hero-headline .outline-text {
+    -webkit-text-stroke: 1px rgba(255,255,255,0.25);
+    color:transparent;
+  }
+  .hero-sub {
+    font-size:17px; font-weight:300; line-height:1.7;
+    color:var(--light); max-width:520px; margin-bottom:48px;
+  }
+  .hero-actions { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:72px; }
+  .hero-stats {
+    display:flex; gap:48px; padding-top:40px;
+    border-top:1px solid rgba(255,255,255,0.08);
+  }
+  .stat-num {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:800; font-size:42px; color:var(--white); line-height:1;
+  }
+  .stat-num span { color:var(--red); }
+  .stat-label {
+    font-size:12px; color:var(--muted); letter-spacing:0.08em;
+    text-transform:uppercase; margin-top:4px;
+  }
+  .hero-image-panel {
+    position:absolute; right:-20px; top:0; bottom:0; width:48%;
+    overflow:hidden;
+  }
+  .hero-image-panel::before {
+    content:''; position:absolute;
+    left:0; top:0; bottom:0; width:200px;
+    background: linear-gradient(to right, var(--black), transparent);
+    z-index:2;
+  }
+  .hero-image-panel::after {
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(to bottom, var(--black) 0%, transparent 15%, transparent 85%, var(--black) 100%);
+    z-index:2;
+  }
+  .hero-img-composite {
+    position:absolute; inset:0;
+    display:grid; grid-template-columns:1fr 1fr; gap:3px; padding:100px 0 40px;
+  }
+  .hero-img-box {
+    background:var(--steel);
+    overflow:hidden; position:relative;
+  }
+  .hero-img-box img { width:100%; height:100%; object-fit:cover; opacity:0.7; }
+  .hero-img-box.tall { grid-row: span 2; }
+  .hero-scroll-hint {
+    position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    font-family:'DM Mono', monospace; font-size:10px; letter-spacing:0.2em;
+    color:var(--muted); text-transform:uppercase;
+  }
+  .scroll-line {
+    width:1px; height:50px;
+    background:linear-gradient(to bottom, var(--red), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%,100%{ opacity:0.4; transform:scaleY(1); }
+    50%{ opacity:1; transform:scaleY(1.2); }
+  }
+
+  /* ── MARQUEE TICKER ── */
+  .ticker {
+    background:var(--red); padding:12px 0; overflow:hidden;
+    position:relative;
+  }
+  .ticker-track {
+    display:flex; gap:0;
+    animation: ticker 25s linear infinite;
+    white-space:nowrap;
+  }
+  .ticker-item {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:13px; letter-spacing:0.15em; text-transform:uppercase;
+    color:#fff; padding:0 40px;
+    display:flex; align-items:center; gap:16px;
+  }
+  .ticker-dot { width:5px; height:5px; background:rgba(255,255,255,0.5); border-radius:50%; }
+  @keyframes ticker {
+    0%{ transform:translateX(0); }
+    100%{ transform:translateX(-50%); }
+  }
+
+  /* ── ABOUT ── */
+  #about { padding:120px 0; position:relative; }
+  .about-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
+  }
+  .about-image-stack {
+    position:relative; height:560px;
+  }
+  .about-img-main {
+    position:absolute; right:0; top:0;
+    width:80%; height:85%;
+    background:var(--steel); overflow:hidden;
+  }
+  .about-img-main img { width:100%; height:100%; object-fit:cover; }
+  .about-img-secondary {
+    position:absolute; left:0; bottom:0;
+    width:55%; height:48%;
+    background:var(--dark3); overflow:hidden;
+    border:3px solid var(--dark);
+  }
+  .about-img-secondary img { width:100%; height:100%; object-fit:cover; }
+  .about-counter-badge {
+    position:absolute; right:0; bottom:60px;
+    background:var(--red); padding:20px 24px;
+    text-align:center;
+  }
+  .about-counter-badge .num {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:900; font-size:48px; color:#fff; line-height:1;
+  }
+  .about-counter-badge .lbl {
+    font-size:10px; letter-spacing:0.12em; color:rgba(255,255,255,0.8);
+    text-transform:uppercase; margin-top:4px;
+  }
+  .about-text p {
+    color:var(--light); font-size:16px; line-height:1.8; margin-bottom:20px; font-weight:300;
+  }
+  .about-text p strong { color:var(--white); font-weight:600; }
+  .about-pillars {
+    margin-top:36px; display:grid; grid-template-columns:1fr 1fr; gap:16px;
+  }
+  .pillar {
+    padding:16px 20px;
+    border:1px solid rgba(255,255,255,0.07);
+    background:rgba(255,255,255,0.02);
+    display:flex; align-items:center; gap:12px;
+  }
+  .pillar-dot { width:8px; height:8px; background:var(--red); flex-shrink:0; }
+  .pillar-text {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600; font-size:15px; letter-spacing:0.05em; text-transform:uppercase;
+  }
+
+  /* ── SERVICES ── */
+  #services {
+    padding:120px 0;
+    background: linear-gradient(to bottom, var(--dark), var(--black));
+    position:relative;
+  }
+  .services-header {
+    display:grid; grid-template-columns:1fr 1fr; gap:60px;
+    margin-bottom:64px; align-items:end;
+  }
+  .services-header p { color:var(--muted); font-size:15px; line-height:1.8; font-weight:300; }
+  .services-grid {
+    display:grid; grid-template-columns:repeat(2,1fr); gap:2px;
+  }
+  .service-card {
+    background:var(--dark2); padding:48px 40px;
+    position:relative; overflow:hidden;
+    transition:background 0.3s;
+    border-bottom:2px solid transparent;
+  }
+  .service-card::before {
+    content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+    background:var(--red); transform:scaleX(0); transition:transform 0.3s; transform-origin:left;
+  }
+  .service-card:hover { background:var(--dark3); }
+  .service-card:hover::before { transform:scaleX(1); }
+  .service-num {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:800; font-size:72px; color:rgba(255,255,255,0.04);
+    line-height:1; position:absolute; top:20px; right:30px;
+    pointer-events:none; user-select:none;
+  }
+  .service-icon {
+    width:52px; height:52px; margin-bottom:28px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--red-glow); border:1px solid var(--red-dark);
+  }
+  .service-icon svg { width:26px; height:26px; fill:var(--red); }
+  .service-title {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:26px; text-transform:uppercase; letter-spacing:0.03em;
+    margin-bottom:16px; color:var(--white);
+  }
+  .service-desc { color:var(--muted); font-size:14px; line-height:1.8; font-weight:300; }
+  .service-list {
+    margin-top:20px; list-style:none; display:flex; flex-direction:column; gap:8px;
+  }
+  .service-list li {
+    font-size:13px; color:var(--light); display:flex; align-items:center; gap:10px;
+  }
+  .service-list li::before {
+    content:''; width:16px; height:1px; background:var(--red); flex-shrink:0;
+  }
+
+  /* ── PROJECTS ── */
+  #projects { padding:120px 0; }
+  .projects-intro {
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:60px; gap:40px;
+  }
+  .projects-intro p { color:var(--muted); max-width:400px; line-height:1.8; font-size:15px; font-weight:300; }
+  .project-featured {
+    display:grid; grid-template-columns:1.4fr 1fr; gap:3px; margin-bottom:3px;
+  }
+  .project-card {
+    position:relative; overflow:hidden; background:var(--steel);
+    cursor:pointer;
+  }
+  .project-card img {
+    width:100%; height:100%; object-fit:cover;
+    transition:transform 0.6s ease; display:block;
+    filter:brightness(0.6) saturate(0.8);
+  }
+  .project-card:hover img { transform:scale(1.04); filter:brightness(0.75) saturate(1); }
+  .project-card .overlay {
+    position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+    padding:32px; display:flex; flex-direction:column; justify-content:flex-end;
+  }
+  .project-card.tall { min-height:480px; }
+  .project-card.short { min-height:240px; }
+  .project-loc {
+    font-family:'DM Mono', monospace;
+    font-size:10px; letter-spacing:0.2em; color:var(--red); text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  .project-name {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:22px; text-transform:uppercase; letter-spacing:0.03em;
+    color:var(--white);
+  }
+  .project-spec {
+    font-size:13px; color:var(--muted); margin-top:6px;
+  }
+  .project-grid-small {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:3px;
+  }
+  .project-tag-bar {
+    display:flex; flex-wrap:wrap; gap:8px; margin-top:48px;
+  }
+  .p-tag {
+    font-family:'DM Mono', monospace;
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--muted); border:1px solid var(--steel);
+    padding:6px 14px;
+  }
+
+  /* ── WHY CHOOSE US ── */
+  #why {
+    padding:120px 0;
+    background:var(--dark);
+    position:relative; overflow:hidden;
+  }
+  .why-bg-text {
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:900; font-size:220px; text-transform:uppercase;
+    color:rgba(255,255,255,0.02); white-space:nowrap; pointer-events:none; user-select:none;
+  }
+  .why-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
+  }
+  .why-features { display:flex; flex-direction:column; gap:0; }
+  .why-item {
+    padding:28px 0; border-bottom:1px solid rgba(255,255,255,0.07);
+    display:flex; gap:24px; align-items:flex-start;
+    transition:padding-left 0.3s;
+  }
+  .why-item:hover { padding-left:8px; }
+  .why-item:first-child { padding-top:0; }
+  .why-num {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:800; font-size:36px; color:var(--red); line-height:1;
+    flex-shrink:0; opacity:0.7;
+  }
+  .why-title {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:20px; text-transform:uppercase; letter-spacing:0.04em;
+    margin-bottom:8px;
+  }
+  .why-desc { font-size:14px; color:var(--muted); line-height:1.8; font-weight:300; }
+  .why-image-mosaic {
+    display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:3px;
+    height:500px;
+  }
+  .why-img {
+    background:var(--steel); overflow:hidden;
+  }
+  .why-img img { width:100%; height:100%; object-fit:cover; filter:brightness(0.7); }
+  .why-img.span2 { grid-column:span 2; }
+  .why-highlight-box {
+    background:var(--red); padding:32px 36px; margin-top:48px;
+    position:relative;
+  }
+  .why-highlight-box::before {
+    content:''; position:absolute; top:-8px; left:24px;
+    width:40px; height:8px; background:var(--red-dark);
+  }
+  .why-quote {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:22px; text-transform:uppercase; letter-spacing:0.03em;
+    line-height:1.3; margin-bottom:16px;
+  }
+  .why-quote-sub { font-size:13px; color:rgba(255,255,255,0.75); font-weight:300; }
+
+  /* ── VISION / MISSION ── */
+  #vision {
+    padding:120px 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(232,23,10,0.07) 0%, transparent 70%),
+                var(--black);
+    text-align:center;
+  }
+  .vision-inner { max-width:800px; margin:0 auto; }
+  .vision-tagline {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:900; font-size: clamp(36px, 5vw, 60px);
+    line-height:1.1; text-transform:uppercase; margin-bottom:32px;
+  }
+  .vision-tagline em { font-style:normal; color:var(--red); }
+  .vision-body { font-size:17px; color:var(--muted); line-height:1.9; font-weight:300; margin-bottom:48px; }
+  .vision-cards {
+    display:grid; grid-template-columns:1fr 1fr; gap:3px; margin-top:64px; text-align:left;
+  }
+  .vision-card {
+    background:var(--dark2); padding:40px; position:relative;
+  }
+  .vision-card-icon {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:900; font-size:60px; color:rgba(255,255,255,0.05);
+    position:absolute; top:16px; right:24px; line-height:1;
+  }
+  .vision-card h4 {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:22px; text-transform:uppercase; letter-spacing:0.05em;
+    color:var(--red); margin-bottom:16px;
+  }
+  .vision-card p { font-size:14px; color:var(--muted); line-height:1.8; font-weight:300; }
+  .values-strip {
+    display:flex; gap:0; margin-top:3px;
+    overflow:hidden;
+  }
+  .value-cell {
+    flex:1; background:var(--dark3); padding:24px 20px;
+    text-align:center; border-right:1px solid var(--dark);
+    transition:background 0.2s;
+  }
+  .value-cell:hover { background:var(--steel); }
+  .value-cell:last-child { border-right:none; }
+  .value-cell .v-name {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:16px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--white);
+  }
+  .value-cell .v-sub { font-size:11px; color:var(--muted); margin-top:4px; font-family:'DM Mono',monospace; }
+
+  /* ── CLIENTS ── */
+  #clients { padding:80px 0; border-top:1px solid rgba(255,255,255,0.06); }
+  .clients-inner { display:flex; align-items:center; gap:60px; }
+  .clients-label {
+    font-family:'DM Mono', monospace; font-size:11px; letter-spacing:0.2em;
+    color:var(--muted); text-transform:uppercase; flex-shrink:0; white-space:nowrap;
+  }
+  .clients-line { width:1px; height:50px; background:rgba(255,255,255,0.1); flex-shrink:0; }
+  .clients-row { display:flex; gap:48px; align-items:center; flex-wrap:wrap; }
+  .client-name {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:18px; letter-spacing:0.05em; text-transform:uppercase;
+    color:rgba(255,255,255,0.3); transition:color 0.2s;
+  }
+  .client-name:hover { color:var(--white); }
+
+  /* ── CONTACT ── */
+  #contact { padding:120px 0; background:var(--dark); }
+  .contact-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:80px;
+  }
+  .contact-left h2 { margin-bottom:24px; }
+  .contact-left p { color:var(--muted); font-size:15px; line-height:1.8; margin-bottom:48px; font-weight:300; }
+  .contact-info { display:flex; flex-direction:column; gap:24px; }
+  .contact-row {
+    display:flex; gap:16px; align-items:flex-start;
+    padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.07);
+  }
+  .contact-row:last-child { border-bottom:none; }
+  .contact-icon {
+    width:40px; height:40px; background:var(--red-glow); border:1px solid var(--red-dark);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .contact-icon svg { width:18px; height:18px; fill:var(--red); }
+  .contact-detail-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; color:var(--muted); margin-bottom:4px; }
+  .contact-detail-val { font-size:14px; color:var(--white); font-weight:400; line-height:1.6; }
+  .contact-form { display:flex; flex-direction:column; gap:16px; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .form-group { display:flex; flex-direction:column; gap:8px; }
+  .form-group label {
+    font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+    color:var(--white); padding:14px 16px; font-family:'Barlow',sans-serif; font-size:14px;
+    outline:none; transition:border-color 0.2s;
+    appearance:none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color:var(--red); }
+  .form-group textarea { min-height:120px; resize:vertical; }
+  .form-note { font-size:12px; color:var(--muted); margin-top:4px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background:var(--black); padding:60px 0 30px;
+    border-top:1px solid rgba(255,255,255,0.06);
+  }
+  .footer-main {
+    display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:60px; margin-bottom:48px;
+  }
+  .footer-brand p {
+    font-size:13px; color:var(--muted); line-height:1.8; margin-top:16px; max-width:280px; font-weight:300;
+  }
+  .footer-logo {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:900; font-size:28px; color:var(--white);
+  }
+  .footer-logo span { color:var(--red); }
+  .footer-col h5 {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:14px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--white); margin-bottom:20px;
+  }
+  .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .footer-col ul li a {
+    font-size:13px; color:var(--muted); text-decoration:none; transition:color 0.2s;
+  }
+  .footer-col ul li a:hover { color:var(--red); }
+  .footer-bottom {
+    display:flex; justify-content:space-between; align-items:center;
+    padding-top:24px; border-top:1px solid rgba(255,255,255,0.06);
+  }
+  .footer-bottom p { font-size:12px; color:var(--muted); }
+  .footer-bottom .tagline {
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700; font-size:14px; letter-spacing:0.1em; text-transform:uppercase; color:var(--red);
+  }
+
+  /* ── FADE-IN ANIMATION ── */
+  .fade-up {
+    opacity:0; transform:translateY(30px);
+    animation: fadeUp 0.7s ease forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity:1; transform:translateY(0); }
+  }
+  .delay-1 { animation-delay:0.1s; }
+  .delay-2 { animation-delay:0.25s; }
+  .delay-3 { animation-delay:0.4s; }
+  .delay-4 { animation-delay:0.55s; }
+
+  /* ── SECTION DIVIDER ── */
+  .divider { width:48px; height:3px; background:var(--red); margin-bottom:24px; }
+
+  /* ── RESPONSIVE (basic) ── */
+  @media(max-width:900px) {
+    nav .nav-links { display:none; }
+    .about-grid, .services-grid, .why-grid, .contact-grid,
+    .footer-main, .project-featured, .vision-cards,
+    .services-header { grid-template-columns:1fr; }
+    .hero-image-panel { display:none; }
+    .hero-headline { font-size:clamp(52px,12vw,80px); }
+    .hero-stats { gap:24px; flex-wrap:wrap; }
+    .clients-inner { flex-direction:column; gap:24px; }
+    .project-grid-small { grid-template-columns:1fr 1fr; }
+    .form-row { grid-template-columns:1fr; }
+    .container { padding:0 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">EPC<span>.</span> <sub>VENTURES</sub></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#vision">Vision</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Get in Touch →</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-left-accent"></div>
+  <div class="container hero-content">
+    <div class="hero-eyebrow fade-up">Nagpur, Maharashtra — Est. Since Inception</div>
+    <h1 class="hero-headline fade-up delay-1">
+      Empowering<br>
+      <span class="red">Energy</span><br>
+      <span class="outline-text">Infrastructure</span>
+    </h1>
+    <p class="hero-sub fade-up delay-2">
+      End-to-end turnkey solutions for transmission towers, monopole design, civil works, and project management — delivering precision engineering across India.
+    </p>
+    <div class="hero-actions fade-up delay-3">
+      <a href="#projects" class="btn-primary">View Our Projects →</a>
+      <a href="#contact" class="btn-outline">Request a Consultation</a>
+    </div>
+    <div class="hero-stats fade-up delay-4">
+      <div>
+        <div class="stat-num">10<span>+</span></div>
+        <div class="stat-label">Key Projects Delivered</div>
+      </div>
+      <div>
+        <div class="stat-num">400<span>kV</span></div>
+        <div class="stat-label">Highest Voltage Handled</div>
+      </div>
+      <div>
+        <div class="stat-num">5<span>+</span></div>
+        <div class="stat-label">States Served</div>
+      </div>
+      <div>
+        <div class="stat-num">4</div>
+        <div class="stat-label">Core Service Verticals</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-image-panel">
+    <div class="hero-img-composite">
+      <div class="hero-img-box tall">
+        <!-- 220 kV M/C Monopole elegant shot -->
+        <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=600&q=80" alt="Transmission Monopole">
+      </div>
+      <div class="hero-img-box">
+        <!-- Foundation work -->
+        <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=400&q=80" alt="Foundation Work">
+      </div>
+      <div class="hero-img-box">
+        <!-- Crane operation -->
+        <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=400&q=80" alt="Crane Erection">
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ══ TICKER ══ -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="ticker-dot"></span> 220 kV Multi-Circuit Monopoles</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> 400 kV D/C Y-Type Monopole Design</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> 132 kV D/C Monopole Erection</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Caisson Foundation Engineering</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Turnkey EPC Solutions</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> CPRI Load Testing Consultancy</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> MSETCL & KPTCL Approved Projects</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Urban Space Constraint Engineering</div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item"><span class="ticker-dot"></span> 220 kV Multi-Circuit Monopoles</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> 400 kV D/C Y-Type Monopole Design</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> 132 kV D/C Monopole Erection</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Caisson Foundation Engineering</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Turnkey EPC Solutions</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> CPRI Load Testing Consultancy</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> MSETCL & KPTCL Approved Projects</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Urban Space Constraint Engineering</div>
+  </div>
+</div>
+
+<!-- ══ ABOUT ══ -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image-stack">
+        <div class="about-img-main">
+          <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=700&q=80" alt="Monopole Project">
+        </div>
+        <div class="about-img-secondary">
+          <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=500&q=80" alt="Foundation Work">
+        </div>
+        <div class="about-counter-badge">
+          <div class="num">100<span style="font-size:28px">%</span></div>
+          <div class="lbl">Turnkey Delivery</div>
+        </div>
+      </div>
+      <div class="about-text">
+        <div class="tag">About EPC Ventures</div>
+        <h2 class="section-title" style="margin-bottom:32px">
+          Leading<br><span class="red">Energy</span><br>Infrastructure
+        </h2>
+        <div class="divider"></div>
+        <p>EPC Ventures is a leading energy infrastructure solutions provider <strong>based in Nagpur, Maharashtra</strong>. We specialize in the comprehensive execution of transmission and monopole projects, delivering innovative and sustainable infrastructure solutions for India's evolving energy sector.</p>
+        <p>With expertise spanning designing, consultancy, supply, and project execution, we offer <strong>end-to-end turnkey solutions</strong> that prioritize precision, safety, and efficiency. Our seasoned professionals integrate advanced technology with deep industry experience.</p>
+        <p>We have executed complex projects across Maharashtra, Karnataka, Telangana and Mumbai — working under MSETCL and KPTCL supervision for major real estate and utility clients.</p>
+        <div class="about-pillars">
+          <div class="pillar"><div class="pillar-dot"></div><div class="pillar-text">Precision Engineering</div></div>
+          <div class="pillar"><div class="pillar-dot"></div><div class="pillar-text">Safety First</div></div>
+          <div class="pillar"><div class="pillar-dot"></div><div class="pillar-text">Sustainable Design</div></div>
+          <div class="pillar"><div class="pillar-dot"></div><div class="pillar-text">On-Time Delivery</div></div>
+          <div class="pillar"><div class="pillar-dot"></div><div class="pillar-text">Client-Centric</div></div>
+          <div class="pillar"><div class="pillar-dot"></div><div class="pillar-text">CPRI Certified</div></div>
+        </div>
+        <div style="margin-top:36px; display:flex; gap:16px;">
+          <a href="#services" class="btn-primary">Explore Services →</a>
+          <a href="#contact" class="btn-outline">Talk to Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ══ -->
+<section id="services">
+  <div class="container">
+    <div class="services-header">
+      <div>
+        <div class="tag">What We Do</div>
+        <h2 class="section-title">Our<br><span class="red">Services</span></h2>
+      </div>
+      <p>From structural concept design to final commissioning, EPC Ventures manages every phase of your energy infrastructure project with precision and accountability.</p>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 17h2v-7H3v7zm4 0h2V7H7v10zm4 0h2v-4h-2v4zm4 0h2V3h-2v14zm4 0h2v-9h-2v9zM2 19h20v2H2v-2z"/></svg>
+        </div>
+        <div class="service-title">Designing &amp; Consultancy</div>
+        <div class="service-desc">Innovative structural design of monopoles and towers engineered for optimal load-bearing capacity and long-term reliability.</div>
+        <ul class="service-list">
+          <li>Monopole &amp; tower structural design</li>
+          <li>Load testing consultancy (CPRI)</li>
+          <li>Foundation design (caisson &amp; conventional)</li>
+          <li>Optimization for site-specific conditions</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 8h-2.81c-.45-.78-1.07-1.45-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12 5s-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20V8zm-6 8h-4v-2h4v2zm0-4h-4v-2h4v2z"/></svg>
+        </div>
+        <div class="service-title">Supply &amp; Procurement</div>
+        <div class="service-desc">Superior monopoles, HT/LT overhead line materials, insulators, conductors, cable trays, and tower hardware — delivered on time.</div>
+        <ul class="service-list">
+          <li>Monopoles &amp; structural sections</li>
+          <li>HT/LT overhead line materials</li>
+          <li>Insulators, conductors &amp; accessories</li>
+          <li>Cable trays &amp; tower hardware</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6-4.72 7.28L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5V2.05z"/></svg>
+        </div>
+        <div class="service-title">Civil &amp; Structural Works</div>
+        <div class="service-desc">Tailored foundation construction and precision erection &amp; stringing services committed to safety and regulatory compliance.</div>
+        <ul class="service-list">
+          <li>Caisson &amp; conventional foundations</li>
+          <li>Monopole &amp; tower erection</li>
+          <li>Conductor stringing &amp; termination</li>
+          <li>Height raising &amp; road crossings</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+        </div>
+        <div class="service-title">Project Management</div>
+        <div class="service-desc">End-to-end turnkey project management from conceptualization to commissioning — on time, on budget, every time.</div>
+        <ul class="service-list">
+          <li>Turnkey project execution</li>
+          <li>Testing &amp; commissioning</li>
+          <li>Outage planning &amp; execution</li>
+          <li>Client-centric reporting &amp; transparency</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROJECTS ══ -->
+<section id="projects">
+  <div class="container">
+    <div class="projects-intro">
+      <div>
+        <div class="tag">Work Portfolio</div>
+        <h2 class="section-title">Key<br><span class="red">Projects</span></h2>
+      </div>
+      <p>Executed across Maharashtra, Karnataka, Telangana and Mumbai region — under MSETCL and KPTCL supervision for India's top developers and utilities.</p>
+    </div>
+    <!-- Featured Projects -->
+    <div class="project-featured">
+      <div class="project-card tall">
+        <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80" alt="Embassy Springs Bengaluru">
+        <div class="overlay">
+          <div class="project-loc">📍 Bengaluru, Karnataka</div>
+          <div class="project-name">Embassy Springs &amp; SNN Projects</div>
+          <div class="project-spec">220 kV Multi-Circuit Monopoles — Design, Foundation, Erection (KPTCL)</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <div class="project-card short">
+          <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" alt="Prestige City Hyderabad">
+          <div class="overlay">
+            <div class="project-loc">📍 Hyderabad, Telangana</div>
+            <div class="project-name">Prestige City Premises</div>
+            <div class="project-spec">220 kV D/C Cable Termination Monopoles</div>
+          </div>
+        </div>
+        <div class="project-card short">
+          <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=600&q=80" alt="Ambazari Hingna Nagpur">
+          <div class="overlay">
+            <div class="project-loc">📍 Nagpur, Maharashtra</div>
+            <div class="project-name">Ambazari-Hingna Line</div>
+            <div class="project-spec">132 kV D/C Monopoles — Height Raising, Road Crossing (MSETCL)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 3-col Grid -->
+    <div class="project-grid-small" style="margin-top:3px;">
+      <div class="project-card" style="min-height:260px;">
+        <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=500&q=80" alt="400kV Y-Type Airoli">
+        <div class="overlay">
+          <div class="project-loc">📍 Airoli, Navi Mumbai</div>
+          <div class="project-name">400 kV D/C Y-Type Monopole</div>
+          <div class="project-spec">World's Unique Design — MSETCL</div>
+        </div>
+      </div>
+      <div class="project-card" style="min-height:260px;">
+        <img src="https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=500&q=80" alt="400kV Navi Mumbai Height">
+        <div class="overlay">
+          <div class="project-loc">📍 Navi Mumbai, Maharashtra</div>
+          <div class="project-name">400 kV Height Raising</div>
+          <div class="project-spec">Land-Saving Monopole Design</div>
+        </div>
+      </div>
+      <div class="project-card" style="min-height:260px;">
+        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&q=80" alt="Data Center Navi Mumbai">
+        <div class="overlay">
+          <div class="project-loc">📍 Navi Mumbai, Maharashtra</div>
+          <div class="project-name">220 kV Cable Termination</div>
+          <div class="project-spec">Data Center Monopole — Design &amp; Supply</div>
+        </div>
+      </div>
+    </div>
+    <!-- Tags -->
+    <div class="project-tag-bar">
+      <div class="p-tag">220 kV Systems</div>
+      <div class="p-tag">400 kV Systems</div>
+      <div class="p-tag">132 kV Systems</div>
+      <div class="p-tag">Caisson Foundations</div>
+      <div class="p-tag">Urban Erection</div>
+      <div class="p-tag">Height Raising</div>
+      <div class="p-tag">Road Crossings</div>
+      <div class="p-tag">CPRI Load Testing</div>
+      <div class="p-tag">MSETCL Projects</div>
+      <div class="p-tag">KPTCL Projects</div>
+    </div>
+    <div style="margin-top:48px; text-align:center;">
+      <a href="#contact" class="btn-primary">Discuss Your Project →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHY CHOOSE US ══ -->
+<section id="why">
+  <div class="why-bg-text">EPC</div>
+  <div class="container">
+    <div class="why-grid">
+      <div>
+        <div class="tag">Why EPC Ventures</div>
+        <h2 class="section-title" style="margin-bottom:48px">
+          Built on<br><span class="red">Trust &amp;</span><br>Excellence
+        </h2>
+        <div class="why-features">
+          <div class="why-item">
+            <div class="why-num">01</div>
+            <div>
+              <div class="why-title">Unique Design Capability</div>
+              <div class="why-desc">We designed one of the world's unique 400 kV D/C Y-Type Monopoles under MSETCL supervision — a testament to our engineering innovation.</div>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-num">02</div>
+            <div>
+              <div class="why-title">CPRI-Certified Testing</div>
+              <div class="why-desc">Our monopoles undergo rigorous load testing at India's premier Central Power Research Institute (CPRI), Bengaluru — ensuring absolute structural integrity.</div>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-num">03</div>
+            <div>
+              <div class="why-title">Urban &amp; Critical Site Expertise</div>
+              <div class="why-desc">We specialize in executing complex projects in space-constrained, densely populated areas — road crossings, flyovers, and live urban corridors.</div>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-num">04</div>
+            <div>
+              <div class="why-title">True Turnkey Delivery</div>
+              <div class="why-desc">From concept to commissioning — design, supply, civil works, erection, stringing, and testing managed under a single accountability umbrella.</div>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-num">05</div>
+            <div>
+              <div class="why-title">Utility &amp; Developer Trust</div>
+              <div class="why-desc">Trusted by MSETCL, KPTCL, Embassy Springs, Prestige City, Purvankara Builders, and SNN Raj Builders for high-stakes energy infrastructure.</div>
+            </div>
+          </div>
+        </div>
+        <div class="why-highlight-box">
+          <div class="why-quote">"Your Vision, Our Expertise — Energizing Tomorrow Together."</div>
+          <div class="why-quote-sub">— EPC Ventures Core Philosophy</div>
+        </div>
+      </div>
+      <div>
+        <div class="why-image-mosaic">
+          <div class="why-img span2">
+            <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80" alt="Project">
+          </div>
+          <div class="why-img">
+            <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=400&q=80" alt="Crane Work">
+          </div>
+          <div class="why-img">
+            <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=400&q=80" alt="Foundation">
+          </div>
+        </div>
+        <div style="margin-top:32px; display:flex; gap:3px;">
+          <div style="flex:1; background:var(--red); padding:24px; text-align:center;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:36px;color:#fff;">400kV</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;">Max Voltage</div>
+          </div>
+          <div style="flex:1; background:var(--dark3); padding:24px; text-align:center;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:36px;color:#fff;">3+</div>
+            <div style="font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;">States Active</div>
+          </div>
+          <div style="flex:1; background:var(--dark3); padding:24px; text-align:center;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:36px;color:#fff;">CPRI</div>
+            <div style="font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;">Tested & Certified</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CLIENTS ══ -->
+<section id="clients">
+  <div class="container">
+    <div class="clients-inner">
+      <div class="clients-label">Trusted By</div>
+      <div class="clients-line"></div>
+      <div class="clients-row">
+        <div class="client-name">MSETCL</div>
+        <div class="client-name">KPTCL</div>
+        <div class="client-name">Embassy Springs</div>
+        <div class="client-name">Prestige City</div>
+        <div class="client-name">Purvankara</div>
+        <div class="client-name">SNN Raj Builders</div>
+        <div class="client-name">CPRI</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ VISION / MISSION ══ -->
+<section id="vision">
+  <div class="container">
+    <div class="vision-inner">
+      <div class="tag">Our Philosophy</div>
+      <div class="vision-tagline">
+        Powering Progress.<br>Building <em>Lasting</em> Futures.
+      </div>
+      <p class="vision-body">
+        We believe infrastructure is not just steel and concrete — it is the backbone of progress. Every tower we raise, every foundation we lay, is a commitment to reliable energy for communities and industries that depend on it.
+      </p>
+    </div>
+    <div class="vision-cards">
+      <div class="vision-card">
+        <div class="vision-card-icon">V</div>
+        <h4>Our Vision</h4>
+        <p>To be India's most trusted partner in energy infrastructure — known for engineering excellence, design innovation, and delivering transformative projects that power sustainable progress.</p>
+      </div>
+      <div class="vision-card">
+        <div class="vision-card-icon">M</div>
+        <h4>Our Mission</h4>
+        <p>To deliver end-to-end turnkey energy infrastructure solutions with precision, safety, and efficiency — integrating advanced technology with deep expertise to exceed client expectations every time.</p>
+      </div>
+    </div>
+    <div class="values-strip">
+      <div class="value-cell"><div class="v-name">Integrity</div><div class="v-sub">Core value</div></div>
+      <div class="value-cell"><div class="v-name">Precision</div><div class="v-sub">Engineering standard</div></div>
+      <div class="value-cell"><div class="v-name">Safety</div><div class="v-sub">Non-negotiable</div></div>
+      <div class="value-cell"><div class="v-name">Innovation</div><div class="v-sub">Design philosophy</div></div>
+      <div class="value-cell"><div class="v-name">Sustainability</div><div class="v-sub">Future focus</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-left">
+        <div class="tag">Get In Touch</div>
+        <h2 class="section-title">Let's Build<br><span class="red">Together</span></h2>
+        <p style="margin-top:24px;">Have a project in mind? Looking for a reliable EPC partner for your energy infrastructure needs? Reach out and our team will respond promptly.</p>
+        <div class="contact-info">
+          <div class="contact-row">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            </div>
+            <div>
+              <div class="contact-detail-label">Phone</div>
+              <div class="contact-detail-val">+91-888-888-8678<br>+91-832-994-0086</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </div>
+            <div>
+              <div class="contact-detail-label">Email</div>
+              <div class="contact-detail-val">info@epcventures.in<br>epc@epcventures.in</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
+            <div>
+              <div class="contact-detail-label">Office Address</div>
+              <div class="contact-detail-val">49, Central Bazar Road, Bajaj Nagar,<br>Nagpur, Maharashtra – 440010</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>
+            </div>
+            <div>
+              <div class="contact-detail-label">Website</div>
+              <div class="contact-detail-val">www.epcventures.in</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="tag">Send an Enquiry</div>
+        <div class="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label>Company</label>
+              <input type="text" placeholder="Your organization">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Phone *</label>
+              <input type="tel" placeholder="+91 XXXXX XXXXX">
+            </div>
+            <div class="form-group">
+              <label>Email *</label>
+              <input type="email" placeholder="your@email.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Service Required</label>
+            <select>
+              <option value="">— Select a service —</option>
+              <option>Designing &amp; Consultancy</option>
+              <option>Supply &amp; Procurement</option>
+              <option>Civil &amp; Structural Works</option>
+              <option>Turnkey Project Management</option>
+              <option>Load Testing Consultancy</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Project Location</label>
+            <input type="text" placeholder="State / City">
+          </div>
+          <div class="form-group">
+            <label>Project Details</label>
+            <textarea placeholder="Briefly describe your project requirements, scope, and timeline..."></textarea>
+          </div>
+          <button class="btn-primary" style="width:100%;justify-content:center;font-size:15px;">
+            Submit Enquiry →
+          </button>
+          <div class="form-note">We typically respond within 24 business hours.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="container">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <div class="footer-logo">EPC<span>.</span> VENTURES</div>
+        <p>Empowering Energy Infrastructure across India. Nagpur-based EPC specialists in transmission monopoles, tower design, and turnkey project delivery.</p>
+        <div style="margin-top:24px; display:flex; gap:12px;">
+          <a href="mailto:info@epcventures.in" class="btn-primary" style="padding:10px 20px;font-size:12px;">Email Us</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#services">Designing &amp; Consultancy</a></li>
+          <li><a href="#services">Supply &amp; Procurement</a></li>
+          <li><a href="#services">Civil &amp; Structural Works</a></li>
+          <li><a href="#services">Project Management</a></li>
+          <li><a href="#services">Load Testing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Projects</h5>
+        <ul>
+          <li><a href="#projects">Bengaluru Projects</a></li>
+          <li><a href="#projects">Hyderabad Projects</a></li>
+          <li><a href="#projects">Nagpur Projects</a></li>
+          <li><a href="#projects">Navi Mumbai Projects</a></li>
+          <li><a href="#projects">400 kV Systems</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#vision">Vision &amp; Mission</a></li>
+          <li><a href="#why">Why Choose Us</a></li>
+          <li><a href="#clients">Our Clients</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 EPC Ventures. All rights reserved. | Nagpur, Maharashtra</p>
+      <div class="tagline">Energizing Tomorrow Together.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Intersection Observer for scroll-triggered fade-in
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.service-card, .project-card, .why-item, .vision-card, .value-cell, .pillar').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+
+// Staggered delays for grid items
+document.querySelectorAll('.services-grid .service-card').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.1}s`;
+});
+document.querySelectorAll('.why-item').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.08}s`;
+});
+document.querySelectorAll('.value-cell').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.07}s`;
+});
+
+// Smooth nav background on scroll
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 60) {
+    nav.style.background = 'rgba(10,10,10,0.97)';
+    nav.style.borderBottomColor = 'rgba(255,255,255,0.08)';
+  } else {
+    nav.style.background = 'linear-gradient(to bottom, rgba(10,10,10,0.98), rgba(10,10,10,0))';
+    nav.style.borderBottomColor = 'rgba(255,255,255,0.04)';
+  }
+});
+</script>
+</body>
+</html>
