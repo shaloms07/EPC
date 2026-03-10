@@ -1162,14 +1162,16 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-family: "Oswald", sans-serif;
-        font-weight: 700;
-        font-size: 280px;
-        color: rgba(255, 255, 255, 0.025);
-        line-height: 1;
-        white-space: nowrap;
         pointer-events: none;
         user-select: none;
+        width: min(560px, 72vw);
+        opacity: 0;
+      }
+      .why-ghost-bg img {
+        display: block;
+        width: 100%;
+        height: auto;
+        filter: grayscale(1) brightness(1.15) contrast(1.05);
       }
       .why-inner {
         max-width: 1280px;
@@ -3224,7 +3226,9 @@
      WHY CHOOSE US
 ══════════════════════════════════════ -->
     <section id="why">
-      <div class="why-ghost-bg">EPC</div>
+      <div class="why-ghost-bg" aria-hidden="true">
+        <img src="Images/airolimsetcl.jpg" alt="" />
+      </div>
       <div class="why-inner">
         <div class="why-grid">
           <!-- Left: feature list -->
