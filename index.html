@@ -2025,6 +2025,8 @@
         border: none;
         cursor: pointer;
         border-radius: 999px;
+        aspect-ratio: 1 / 1;
+        flex-shrink: 0;
         opacity: 0;
         visibility: hidden;
         transform: translateY(16px) scale(0.92);
@@ -2101,10 +2103,20 @@
           grid-template-columns: 1fr;
         }
         #scroll-to-top {
-          bottom: 20px;
+          bottom: max(20px, env(safe-area-inset-bottom));
           right: 20px;
-          width: 60px;
-          height: 60px;
+          width: 54px;
+          height: 54px;
+        }
+        #scroll-to-top .progress-ring {
+          inset: 6px;
+        }
+        #scroll-to-top .scroll-icon {
+          width: 16px;
+          height: 16px;
+        }
+        #scroll-to-top::after {
+          inset: -4px;
         }
       }
 
@@ -2289,12 +2301,27 @@
         }
       }
       @media (max-width: 600px) {
+        #about,
+        #services,
+        #projects,
+        #why,
+        #vision,
+        #contact {
+          padding: 72px 0;
+        }
+        #clients {
+          padding: 36px 0;
+        }
         .hero-h1 {
           font-size: clamp(40px, 13vw, 62px);
         }
         .hero-sub {
           font-size: 15px;
           line-height: 1.7;
+        }
+        #hero .hero-content {
+          padding-top: 92px;
+          padding-bottom: 42px;
         }
         .hero-btns {
           flex-direction: column;
@@ -2371,9 +2398,9 @@
         #scroll-to-top {
           left: auto;
           right: 20px;
-          bottom: 16px;
-          width: 56px;
-          height: 56px;
+          bottom: max(16px, env(safe-area-inset-bottom));
+          width: 54px;
+          height: 54px;
         }
         .about-inner,
         .services-wrap,
