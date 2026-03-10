@@ -16,6 +16,21 @@
       rel="stylesheet"
     />
 
+    <link
+      rel="icon"
+      type="image/png"
+      href="/favicon/favicon-96x96.png"
+      sizes="96x96"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicon/apple-touch-icon.png"
+    />
+    <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -439,8 +454,7 @@
       .hero-bg {
         position: absolute;
         inset: 0;
-        background: url("Images/tower.jpg")
-          center/cover no-repeat;
+        background: url("Images/tower.jpg") center/cover no-repeat;
       }
       .hero-bg::after {
         content: "";
@@ -1387,8 +1401,7 @@
         bottom: 0;
         right: 0;
         width: 40%;
-        background: url("Images/monopole_132kv.jpg")
-          center/cover no-repeat;
+        background: url("Images/monopole_132kv.jpg") center/cover no-repeat;
         opacity: 0.06;
       }
       .vision-inner {
@@ -3036,8 +3049,8 @@
               <div class="proj-name">Embassy Springs &amp; SNN Projects</div>
               <div class="proj-desc">
                 End-to-end 220 kV M/C monopole execution for Embassy Springs,
-                Purvankara and SNN premises including design, civil
-                foundations, erection and stringing under KPTCL supervision.
+                Purvankara and SNN premises including design, civil foundations,
+                erection and stringing under KPTCL supervision.
               </div>
             </div>
             <div class="proj-arrow">
@@ -3513,8 +3526,7 @@
                 <div>
                   <div class="c-lbl">Email</div>
                   <div class="c-val">
-                    <a href="mailto:info@epcventures.in"
-                      >info@epcventures.in</a
+                    <a href="mailto:info@epcventures.in">info@epcventures.in</a
                     ><br />
                     <a href="mailto:epc@epcventures.in">epc@epcventures.in</a>
                   </div>
@@ -3567,14 +3579,18 @@
               <span class="contact-panel-label">Fastest Way to Reach Us</span>
               <h3>Request a Quote in Minutes</h3>
               <p>
-                Enquire us for project scope, turnaround timelines,
-                or site-specific requirements. It keeps the page lighter and is
+                Enquire us for project scope, turnaround timelines, or
+                site-specific requirements. It keeps the page lighter and is
                 easier to use on mobile.
               </p>
               <div class="contact-actions">
                 <button class="btn-red" type="button" data-open-modal>
                   Open Enquiry Form
-                  <svg class="arrow-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <svg
+                    class="arrow-icon"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
                     <path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z" />
                   </svg>
                 </button>
@@ -3797,35 +3813,35 @@
         const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const name = form.querySelector('[name="name"]').value.trim();
-        const phone = form.querySelector('[name="phone"]').value.trim();
-        const email = form.querySelector('[name="email"]').value.trim();
+          e.preventDefault();
+          const name = form.querySelector('[name="name"]').value.trim();
+          const phone = form.querySelector('[name="phone"]').value.trim();
+          const email = form.querySelector('[name="email"]').value.trim();
 
-        // Mark errors
-        let valid = true;
-        [
-          { field: "name", ok: !!name },
-          { field: "phone", ok: !!phone },
-          { field: "email", ok: !!email && emailRe.test(email) },
-        ].forEach(({ field, ok }) => {
-          const inp = form.querySelector(`[name="${field}"]`);
-          inp.style.borderColor = ok ? "" : "#ED2130";
-          if (!ok) valid = false;
+          // Mark errors
+          let valid = true;
+          [
+            { field: "name", ok: !!name },
+            { field: "phone", ok: !!phone },
+            { field: "email", ok: !!email && emailRe.test(email) },
+          ].forEach(({ field, ok }) => {
+            const inp = form.querySelector(`[name="${field}"]`);
+            inp.style.borderColor = ok ? "" : "#ED2130";
+            if (!ok) valid = false;
+          });
+          if (!valid) return;
+
+          // Simulate submit
+          submitBtn.disabled = true;
+          btnLabel.textContent = "Sending…";
+          setTimeout(() => {
+            form.reset();
+            submitBtn.style.display = "none";
+            formSuccess.style.display = "block";
+          }, 1300);
         });
-        if (!valid) return;
 
-        // Simulate submit
-        submitBtn.disabled = true;
-        btnLabel.textContent = "Sending…";
-        setTimeout(() => {
-          form.reset();
-          submitBtn.style.display = "none";
-          formSuccess.style.display = "block";
-        }, 1300);
-      });
-
-      // Reset error color on input
+        // Reset error color on input
         form.querySelectorAll("input, textarea").forEach((el) => {
           el.addEventListener("input", () => {
             el.style.borderColor = "";
@@ -3895,7 +3911,10 @@
         const progress = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
         const offset = progressCircumference * (1 - progress);
         scrollProgressRing.style.strokeDashoffset = `${offset}`;
-        scrollToTopBtn.classList.toggle("visible", scrollTop > window.innerHeight * 0.6);
+        scrollToTopBtn.classList.toggle(
+          "visible",
+          scrollTop > window.innerHeight * 0.6,
+        );
       }
 
       scrollToTopBtn.addEventListener("click", () => {
